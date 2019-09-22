@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+import os
+import os.path as osp
 
 #== Parameters =======================================================================
 BLUR = 21
@@ -57,4 +59,8 @@ masked = (masked * 255).astype('uint8')                     # Convert back to 8-
 cv2.imshow('img', masked)                                   # Display
 cv2.waitKey()
 
-cv2.imwrite('../public/result/test5.jpg', masked)           # Save
+det_path = osp.realpath('../public/result')
+if not os.path.exists(det_path):
+    os.makedirs(det_path)
+
+cv2.imwrite(osp.join(det_path, 'test5.jpg'), masked)           # Save
