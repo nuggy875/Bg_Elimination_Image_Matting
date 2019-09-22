@@ -22,7 +22,7 @@ MASK_ERODE_ITER = 10
 MASK_COLOR = (0.0,0.0,0.0) # In BGR format
 
 
-def cannyAlg(input_img, output_img):
+def findContour(input_img, output_img):
     #== Processing =======================================================================
 
     #-- Read image -----------------------------------------------------------------------
@@ -82,14 +82,28 @@ def cannyAlg(input_img, output_img):
 
 def grabCut(input_img, output_img):
     img = cv2.imread(input_img)
+    w = img.shape[0]
+    h = img.shape[1]
+    print(w, h)
     mask = np.zeros(img.shape[:2], np.uint8)
     bgdModel = np.zeros((1,65), np.float64)
     fgdModel = np.zeros((1,65), np.float64)
-    rect = (50,50,450,290)
-    cv2.grabCut(img,mask,rect,bgdModel,fgdModel,5,cv2.GC_INIT_WITH_RECT)
+    # rect = (1,1,655,344)
+    rect = (1, 1, int(img.shape[:2][1]), int(img.shape[:2][0]))
+    cv2.grabCut(img, mask, rect, bgdModel, fgdModel, 5, cv2.GC_INIT_WITH_RECT)
+
     mask2 = np.where((mask==2)|(mask==0), 0, 1).astype('uint8')
     img = img*mask2[:,:,np.newaxis]
-    plt.imshow(img), plt.colorbar(), plt.show()
+
+    tmp = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    _, alpha = cv2.threshold(tmp,0,255,cv2.THRESH_BINARY)
+    b, g, r = cv2.split(img)
+    rgba = [b,g,r, alpha]
+    dst = cv2.merge(rgba,4)
+
+    cv2.imshow('img', dst)                                   # Display
+    cv2.waitKey()
+    cv2.imwrite(output_img, dst)           # Save
 
 
 
@@ -113,7 +127,7 @@ if __name__ == "__main__":
         exit()
     
     if sys.argv[1] == '1':
-        cannyAlg(input_img_path, output_img_path)
+        findContour(input_img_path, output_img_path)
     elif sys.argv[1] == '2':
         grabCut(input_img_path, output_img_path)
     else:

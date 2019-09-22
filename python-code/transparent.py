@@ -16,7 +16,7 @@ gray = cv2.cvtColor(bgr, cv2.COLOR_BGR2GRAY)
 bgr = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
 alpha = src[:,:,:3]
 result = np.dstack([bgr, alpha])
-
+@
 
 det_path = osp.realpath('../public/result')
 cv2.imwrite(osp.join(det_path, sys.argv[1]+'_rst.png'), result)           # Save
