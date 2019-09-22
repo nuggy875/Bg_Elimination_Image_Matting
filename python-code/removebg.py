@@ -3,6 +3,7 @@ import numpy as np
 import os
 import os.path as osp
 import sys
+from matplotlib import pyplot as plt
 
 #== Parameters =======================================================================
 #BLUR = 21
@@ -18,16 +19,13 @@ CANNY_THRESH_1 = 10
 CANNY_THRESH_2 = 10
 MASK_DILATE_ITER = 10
 MASK_ERODE_ITER = 10
-MASK_COLOR = (1.0,1.0,1.0) # In BGR format
+MASK_COLOR = (0.0,0.0,0.0) # In BGR format
 
 
-
-
-def cannyAlg(input_img):
+def cannyAlg(input_img, output_img):
     #== Processing =======================================================================
 
     #-- Read image -----------------------------------------------------------------------
-
     img = cv2.imread(input_img)
     # gray scaling
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -71,19 +69,28 @@ def cannyAlg(input_img):
     masked = (mask_stack * img) + ((1-mask_stack) * MASK_COLOR) # Blend
     masked = (masked * 255).astype('uint8')                     # Convert back to 8-bit 
 
+    tmp = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
+    _,alpha = cv2.threshold(tmp,0,255,cv2.THRESH_BINARY)
+    b, g, r = cv2.split(masked)
+    rgba = [b,g,r, alpha]
+    dst = cv2.merge(rgba,4)
 
-    cv2.imshow('img', masked)                                   # Display
+    cv2.imshow('img', dst)                                   # Display
     cv2.waitKey()
+    cv2.imwrite(output_img, dst)           # Save
 
 
-    det_path = osp.realpath('../public/result')
-    if not os.path.exists(det_path):
-        os.makedirs(det_path)
-    cv2.imwrite(osp.join(det_path, sys.argv[1]+'_rst.png'), masked)           # Save
+def grabCut(input_img, output_img):
+    img = cv2.imread(input_img)
+    mask = np.zeros(img.shape[:2], np.uint8)
+    bgdModel = np.zeros((1,65), np.float64)
+    fgdModel = np.zeros((1,65), np.float64)
+    rect = (50,50,450,290)
+    cv2.grabCut(img,mask,rect,bgdModel,fgdModel,5,cv2.GC_INIT_WITH_RECT)
+    mask2 = np.where((mask==2)|(mask==0), 0, 1).astype('uint8')
+    img = img*mask2[:,:,np.newaxis]
+    plt.imshow(img), plt.colorbar(), plt.show()
 
-
-def grabCut(input_img):
-    
 
 
 # python removebg.py 1 test5
@@ -96,16 +103,19 @@ if __name__ == "__main__":
         exit()
         
     input_img_path = osp.realpath('../public/image/'+sys.argv[2]+'.jpg')
+    det_path = osp.realpath('../public/result')
+    if not os.path.exists(det_path):
+        os.makedirs(det_path)
+    output_img_path = osp.join(det_path, sys.argv[2]+'_'+sys.argv[1]+'_rst.png')
 
     if not os.path.exists(input_img_path):
         print('ERROR:ImageNotExists')
         exit()
     
     if sys.argv[1] == '1':
-        cannyAlg(input_img_path)
-    elif sys.argv[2] == '2':
-        grabCut(input_img_path)
-    
+        cannyAlg(input_img_path, output_img_path)
+    elif sys.argv[1] == '2':
+        grabCut(input_img_path, output_img_path)
     else:
         print('else')
         
