@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0d22d50f-5734-450e-ba8f-3853b5216633" name="Default Changelist" comment="" />
+    <list default="true" id="0d22d50f-5734-450e-ba8f-3853b5216633" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/python-code/imageMatting.py" beforeDir="false" afterPath="$PROJECT_DIR$/python-code/imageMatting.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,14 +16,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/python-code/imageMatting.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="386">
-              <caret line="99" lean-forward="true" selection-start-line="99" selection-end-line="99" />
+            <state relative-caret-position="828">
+              <caret line="165" selection-start-line="165" selection-end-line="165" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
-                <element signature="e#627#1076#0" />
-                <element signature="e#1121#1618#0" />
-                <element signature="e#1661#2104#0" />
-                <element signature="e#2156#2620#0" />
               </folding>
             </state>
           </provider>
@@ -30,8 +29,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="88">
-                <caret line="4" column="44" lean-forward="true" selection-start-line="4" selection-start-column="44" selection-end-line="4" selection-end-column="44" />
+              <first_editor relative-caret-position="396">
+                <caret line="18" column="46" lean-forward="true" selection-start-line="18" selection-start-column="46" selection-end-line="18" selection-end-column="46" />
               </first_editor>
               <second_editor />
             </state>
@@ -86,6 +85,9 @@
       <find>gen_trimap</find>
       <find>fg_test_files</find>
       <find>BEST</find>
+      <find>process_test</find>
+      <find>composite4_test</find>
+      <find>composite4</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -102,9 +104,8 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="1012" />
-    <option name="y" value="69" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-7" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
   </component>
@@ -200,11 +201,11 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1012" y="69" width="974" height="1047" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21901709" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10800843" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Version Control" />
       <window_info anchor="bottom" id="Python Console" />
@@ -258,14 +259,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/python-code/imageMatting.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="386">
-          <caret line="99" lean-forward="true" selection-start-line="99" selection-end-line="99" />
+        <state relative-caret-position="828">
+          <caret line="165" selection-start-line="165" selection-end-line="165" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
-            <element signature="e#627#1076#0" />
-            <element signature="e#1121#1618#0" />
-            <element signature="e#1661#2104#0" />
-            <element signature="e#2156#2620#0" />
           </folding>
         </state>
       </provider>
@@ -273,8 +270,8 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="88">
-            <caret line="4" column="44" lean-forward="true" selection-start-line="4" selection-start-column="44" selection-end-line="4" selection-end-column="44" />
+          <first_editor relative-caret-position="396">
+            <caret line="18" column="46" lean-forward="true" selection-start-line="18" selection-start-column="46" selection-end-line="18" selection-end-column="46" />
           </first_editor>
           <second_editor />
         </state>

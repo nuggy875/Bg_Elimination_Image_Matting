@@ -56,21 +56,6 @@ def composite4_test(fg, bg, a, w, h):
     return new_im, new_a, fg, bg
 
 
-def process_test(im_name, bg_name):
-    im = cv.imread(fg_path_test + im_name)
-    a = cv.imread(a_path_test + im_name, 0)
-    h, w = im.shape[:2]
-    bg = cv.imread(bg_path_test + bg_name)
-    bh, bw = bg.shape[:2]
-    wratio = w / bw
-    hratio = h / bh
-    ratio = wratio if wratio > hratio else hratio
-    if ratio > 1:
-        bg = cv.resize(src=bg, dsize=(math.ceil(bw * ratio), math.ceil(bh * ratio)), interpolation=cv.INTER_CUBIC)
-
-    return composite4_test(im, bg, a, w, h)
-
-
 def process_test2(im_path, a_path, bg_path):
     im = cv.imread(os.path.join('test', im_path))
     a = cv.imread(os.path.join('test', a_path), 0)
@@ -91,6 +76,7 @@ if __name__ == '__main__':
     im_name = opts.input + '.png'
     a_name = opts.input + '_a.png'
     bg_name = opts.bg + '.png'
+    img_original = cv.imread(os.path.join('test', im_name))
 
     checkpoint = 'checkpoint.tar'
     checkpoint = torch.load(checkpoint)
@@ -117,7 +103,8 @@ if __name__ == '__main__':
     print('__', im_name, bg_name)
     img, alpha, fg, bg = process_test2(im_name, a_name, bg_name)
 
-    # 원래 이미지
+    cv.imwrite('results/{}_0_input.png'.format(opts.input), img_original)
+    # 원래 이미지에 배경 입히기
     cv.imwrite('results/{}_1_image.png'.format(opts.input), img)
     # 알파 이미지
     cv.imwrite('results/{}_2_alpha.png'.format(opts.input), alpha)
@@ -174,6 +161,7 @@ if __name__ == '__main__':
                            interpolation=cv.INTER_CUBIC)
 
     im, bg = composite4(img, new_bg, pred, w, h)
-    cv.imwrite('results/{}_5_compose.png'.format(opts.input), im)
-    cv.imwrite('results/{}_6_new_bg.png'.format(opts.input), new_bg)
+    cv.imwrite('results/{}_5_new_bg.png'.format(opts.input), new_bg)
+    cv.imwrite('results/{}_6_compose.png'.format(opts.input), im)
+
 
