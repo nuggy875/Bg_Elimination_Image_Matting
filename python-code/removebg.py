@@ -39,8 +39,8 @@ def findContour(input_img, output_img):
     #-- Find contours in edges, sort by area ---------------------------------------------
     contour_info = []
     # Previously, for a previous version of cv2, this line was: 
-    _, contours, _ = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
-    #contours, _ = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+    # _, contours, _ = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+    contours, _ = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
     # Thanks to notes from commenters, I've updated the code but left this note
     for c in contours:
         contour_info.append((
@@ -167,7 +167,7 @@ if __name__ == "__main__":
         print('ERROR:EnvVarialbleRequired')
         exit()
         
-    input_img_path = osp.realpath('../public/image/'+sys.argv[2]+'.jpg')
+    input_img_path = osp.realpath('../public/image/'+sys.argv[2]+'.png')
     det_path = osp.realpath('../public/result')
     if not os.path.exists(det_path):
         os.makedirs(det_path)
@@ -199,5 +199,3 @@ if __name__ == "__main__":
 
 
 
-
-    
