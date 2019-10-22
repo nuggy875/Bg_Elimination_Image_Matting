@@ -1,5 +1,4 @@
-nukki project
-누끼 프로젝트 with 누기
+# Nukki Project
 
 Check Point link (checkpoint.tar)  : https://drive.google.com/open?id=1GT6cbIKZ68SOSuTvqqaGiB1muKdQe_3q
 
@@ -11,15 +10,17 @@ Directory : nukki/python-code/checkpoint.tar
   |-- {root_path}
   `-- |-- public
       |-- python-code
-      `-- |-- annotations
-          |   |-- instances_train2017.json
-          |   |-- instances_val2017.json
-          |   |-- person_keypoints_train2017.json
-          |   |-- person_keypoints_val2017.json
-          |   |-- image_info_test-dev2017.json
-          |-- checkpoint.tar
-          |-- train2017
-          |-- val2017
-          |-- test2017
+      `-- |-- checkpoint.tar
+          |-- imageMatting.py
+          |-- config.py
+          |-- models.py
+          |-- utils.py
+          |-- data_gen.py
       |-- README.md
   ~~~
+
+## Dependencies
+
+- Python 3.6.x
+- Pytorch 1.1.0
+

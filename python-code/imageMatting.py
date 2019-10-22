@@ -15,8 +15,8 @@ from utils import compute_mse, compute_sad, ensure_folder, draw_str
 
 def parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input', type=str, default="input1")
-    parser.add_argument('--bg', type=str, default="bg1")
+    parser.add_argument('--input', type=str, default="imageF")
+    parser.add_argument('--bg', type=str, default="bg3")
     return parser.parse_args()
 
 
@@ -57,10 +57,10 @@ def composite4_test(fg, bg, a, w, h):
 
 
 def process_test2(im_path, a_path, bg_path):
-    im = cv.imread(os.path.join('test', im_path))
-    a = cv.imread(os.path.join('test', a_path), 0)
+    im = cv.imread(os.path.join('input', im_path))
+    a = cv.imread(os.path.join('input', a_path), 0)
     h, w = im.shape[:2]
-    bg = cv.imread(os.path.join('test', bg_path))
+    bg = cv.imread(os.path.join('input', bg_path))
     bh, bw = bg.shape[:2]
     wratio = w / bw
     hratio = h / bh
@@ -76,7 +76,7 @@ if __name__ == '__main__':
     im_name = opts.input + '.png'
     a_name = opts.input + '_a.png'
     bg_name = opts.bg + '.png'
-    img_original = cv.imread(os.path.join('test', im_name))
+    img_original = cv.imread(os.path.join('input', im_name))
 
     checkpoint = 'checkpoint.tar'
     checkpoint = torch.load(checkpoint)
@@ -150,7 +150,7 @@ if __name__ == '__main__':
 
     # new_bg = new_bgs[i]
     # new_bg = cv.imread(os.path.join(bg_test, new_bg))
-    new_bg = cv.imread(os.path.join('test', bg_name))
+    new_bg = cv.imread(os.path.join('input', bg_name))
     bh, bw = new_bg.shape[:2]
     wratio = w / bw
     hratio = h / bh
