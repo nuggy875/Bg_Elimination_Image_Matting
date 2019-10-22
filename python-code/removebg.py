@@ -85,18 +85,22 @@ def grabCut(input_img, output_img):
     w = img.shape[0]
     h = img.shape[1]
     print(w, h)
+    # h x h 행렬
     mask = np.zeros(img.shape[:2], np.uint8)
-    bgdModel = np.zeros((1,65), np.float64)
-    fgdModel = np.zeros((1,65), np.float64)
+    bgdModel = np.zeros((1, 65), np.float64)
+    fgdModel = np.zeros((1, 65), np.float64)
     # rect = (1,1,655,344)
+    x2 = img.shape[:2][1]
+    y2 = img.shape[:2][0]
+    shape = img.shape
     rect = (1, 1, int(img.shape[:2][1]), int(img.shape[:2][0]))
     cv2.grabCut(img, mask, rect, bgdModel, fgdModel, 5, cv2.GC_INIT_WITH_RECT)
 
-    mask2 = np.where((mask==2)|(mask==0), 0, 1).astype('uint8')
+    mask2 = np.where((mask == 2) | (mask == 0), 0, 1).astype('uint8')
     img = img*mask2[:,:,np.newaxis]
 
     tmp = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    _, alpha = cv2.threshold(tmp,0,255,cv2.THRESH_BINARY)
+    _, alpha = cv2.threshold(tmp, 0, 255, cv2.THRESH_BINARY)
     b, g, r = cv2.split(img)
     rgba = [b,g,r, alpha]
     dst = cv2.merge(rgba,4)
@@ -163,31 +167,37 @@ def bgSubMOG2(input_img, output_img):
 # imageFileName = test5
 
 if __name__ == "__main__":
+    '''
     if len(sys.argv) == 1 or len(sys.argv) == 2:
         print('ERROR:EnvVarialbleRequired')
         exit()
-        
-    input_img_path = osp.realpath('../public/image/'+sys.argv[2]+'.png')
+    '''
+    # sys.argv[1]
+    argv1 = '2'
+    # sys.argv[2]
+    argv2 = 'test2'
+
+    input_img_path = osp.realpath('../public/image/'+argv2+'.jpg')
     det_path = osp.realpath('../public/result')
     if not os.path.exists(det_path):
         os.makedirs(det_path)
-    output_img_path = osp.join(det_path, sys.argv[1]+'_'+sys.argv[2]+'_rst.png')
+    output_img_path = osp.join(det_path, argv1+'_'+argv2+'_rst.png')
 
     if not os.path.exists(input_img_path):
         print('ERROR:ImageNotExists')
         exit()
     
     # findConcour 알고리즘 (OpenCV)
-    if sys.argv[1] == '1':
+    if argv1 == '1':
         findContour(input_img_path, output_img_path)
     # grapcut 알고리즘 (OpenCV)
-    elif sys.argv[1] == '2':
+    elif argv1 == '2':
         grabCut(input_img_path, output_img_path)
     # watershed 알고리즘 (OpenCV)
-    elif sys.argv[1] == '3':
+    elif argv1 == '3':
         watershed(input_img_path, output_img_path)
     # BackgroundSubtractorMOG2 알고리즘 (OpenCV)
-    elif sys.argv[1] == '4':
+    elif argv1 == '4':
         bgSubMOG2(input_img_path, output_img_path)
     
     else:

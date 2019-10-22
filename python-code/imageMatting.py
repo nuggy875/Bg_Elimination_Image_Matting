@@ -16,7 +16,7 @@ from utils import compute_mse, compute_sad, ensure_folder, draw_str
 def parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--input', type=str, default="imageF")
-    parser.add_argument('--bg', type=str, default="bg3")
+    parser.add_argument('--bg', type=str, default="trans2000")
     return parser.parse_args()
 
 
@@ -39,24 +39,26 @@ def composite4(fg, bg, a, w, h):
 
 
 def composite4_test(fg, bg, a, w, h):
+    print(':: Image w, h :: ', w, h)
+
     fg = np.array(fg, np.float32)
     bg_h, bg_w = bg.shape[:2]
+    print(':: Background w, h ::', bg_w, bg_h)
     x = max(0, int((bg_w - w) / 2))
     y = max(0, int((bg_h - h) / 2))
+
     crop = np.array(bg[y:y + h, x:x + w], np.float32)
     alpha = np.zeros((h, w, 1), np.float32)
     alpha[:, :, 0] = a / 255.
     im = alpha * fg + (1 - alpha) * crop
     im = im.astype(np.uint8)
 
-    new_a = np.zeros((bg_h, bg_w), np.uint8)
-    new_a[y:y + h, x:x + w] = a
-    new_im = bg.copy()
-    new_im[y:y + h, x:x + w] = im
-    return new_im, new_a, fg, bg
+    new_a = np.zeros((h, w), np.uint8)
+    new_a[0:h, 0:w] = a
+    return im, new_a, fg, bg
 
 
-def process_test2(im_path, a_path, bg_path):
+def image_process(im_path, a_path, bg_path):
     im = cv.imread(os.path.join('input', im_path))
     a = cv.imread(os.path.join('input', a_path), 0)
     h, w = im.shape[:2]
@@ -100,25 +102,24 @@ if __name__ == '__main__':
     # bcount = int(name.split('.')[0].split('_')[1])
     # im_name = fg_test_files[fcount]
     # bg_name = bg_test_files[bcount]
-    print('__', im_name, bg_name)
-    img, alpha, fg, bg = process_test2(im_name, a_name, bg_name)
+    print('==> ', im_name, bg_name)
+    im, alpha, fg, bg = image_process(im_name, a_name, bg_name)
 
-    cv.imwrite('results/{}_0_input.png'.format(opts.input), img_original)
-    # 원래 이미지에 배경 입히기
-    cv.imwrite('results/{}_1_image.png'.format(opts.input), img)
+    cv.imwrite('results/{}_0_img_original.png'.format(opts.input), img_original)
+    cv.imwrite('results/{}_1_img_crop.png'.format(opts.input), im)
     # 알파 이미지
-    cv.imwrite('results/{}_2_alpha.png'.format(opts.input), alpha)
+    cv.imwrite('results/{}_3_alpha.png'.format(opts.input), alpha)
 
     print('\nStart processing image: {}'.format(opts.input))
     print('\nBackground: {}'.format(opts.bg))
 
-    h, w = img.shape[:2]
+    h, w = im.shape[:2]
 
     trimap = gen_trimap(alpha)
-    cv.imwrite('results/{}_3_trimap.png'.format(opts.input), trimap)
+    cv.imwrite('results/{}_4_trimap.png'.format(opts.input), trimap)
 
     x = torch.zeros((1, 4, h, w), dtype=torch.float)
-    image = img[..., ::-1]  # RGB
+    image = im[..., ::-1]  # RGB
     image = transforms.ToPILImage()(image)
     image = transformer(image)
     x[0:, 0:3, :, :] = image
@@ -146,7 +147,7 @@ if __name__ == '__main__':
 
     out = (pred.copy() * 255).astype(np.uint8)
     draw_str(out, (10, 20), str_msg)
-    cv.imwrite('results/{}_4_out.png'.format(opts.input), out)
+    cv.imwrite('results/{}_5_out.png'.format(opts.input), out)
 
     # new_bg = new_bgs[i]
     # new_bg = cv.imread(os.path.join(bg_test, new_bg))
@@ -160,8 +161,7 @@ if __name__ == '__main__':
         new_bg = cv.resize(src=new_bg, dsize=(math.ceil(bw * ratio), math.ceil(bh * ratio)),
                            interpolation=cv.INTER_CUBIC)
 
-    im, bg = composite4(img, new_bg, pred, w, h)
-    cv.imwrite('results/{}_5_new_bg.png'.format(opts.input), new_bg)
-    cv.imwrite('results/{}_6_compose.png'.format(opts.input), im)
+    im, bg = composite4(im, new_bg, pred, w, h)
+    cv.imwrite('results/{}_7_compose.png'.format(opts.input), im)
 
 
