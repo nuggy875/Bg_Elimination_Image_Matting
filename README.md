@@ -22,5 +22,5 @@ Directory : nukki/python-code/checkpoint.tar
 ## Dependencies
 
 - Python 3.6.x
-- Pytorch 1.1.0
+- Pytorch 1.3.1
 

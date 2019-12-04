@@ -15,7 +15,7 @@ from utils import compute_mse, compute_sad, ensure_folder, draw_str
 
 def parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input', type=str, default="imageF")
+    parser.add_argument('--input', type=str, default="imageB")
     parser.add_argument('--bg', type=str, default="trans2000")
     return parser.parse_args()
 
@@ -92,7 +92,7 @@ if __name__ == '__main__':
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
 
-    ensure_folder('images')
+    ensure_folder('input')
 
     # bg_test = 'data/bg_test/'
     # new_bgs = [f for f in os.listdir(bg_test) if os.path.isfile(os.path.join(bg_test, f)) and f.endswith('.jpg')]
