@@ -24,3 +24,7 @@ Directory : nukki/python-code/checkpoint.tar
 - Python 3.6.x
 - Pytorch 1.3.1
 
+## Docker File
+https://hub.docker.com/repository/docker/nuggy875/nukki
+
+docker pull nuggy875/nukki:latest
