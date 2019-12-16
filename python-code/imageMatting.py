@@ -20,8 +20,10 @@ from utils import compute_mse, compute_sad, ensure_folder, draw_str
 
 def parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input', type=str, default="imageB")
-    parser.add_argument('--bg', type=str, default="trans2000")
+    parser.add_argument('--input', type=str, default=os.path.abspath(os.path.join(os.path.dirname(__file__), "../public/input/input.jpg")))
+    parser.add_argument('--inputa', type=str, default=os.path.abspath(os.path.join(os.path.dirname(__file__), "../public/input/input_a.jpg")))
+    parser.add_argument('--bg', type=str, default=os.path.abspath(os.path.join(os.path.dirname(__file__), "input/trans2000.png")))
+    parser.add_argument('--savepath', type=str, default=os.path.abspath(os.path.join(os.path.dirname(__file__), "../public/result")))
     return parser.parse_args()
 
 
@@ -80,10 +82,8 @@ def image_process(im_path, a_path, bg_path):
 
 if __name__ == '__main__':
     opts = parser()
-    im_name = opts.input + '.png'
-    a_name = opts.input + '_a.png'
-    bg_name = opts.bg + '.png'
-    img_original = cv.imread(os.path.join('input', im_name))
+    img_original = cv.imread(opts.input)
+    input_file_name = os.path.basename(opts.input)
 
     checkpoint = 'checkpoint.tar'
     checkpoint = torch.load(checkpoint)
@@ -97,7 +97,7 @@ if __name__ == '__main__':
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
 
-    ensure_folder('input')
+    # ensure_folder('input')
 
     # bg_test = 'data/bg_test/'
     # new_bgs = [f for f in os.listdir(bg_test) if os.path.isfile(os.path.join(bg_test, f)) and f.endswith('.jpg')]
@@ -107,21 +107,20 @@ if __name__ == '__main__':
     # bcount = int(name.split('.')[0].split('_')[1])
     # im_name = fg_test_files[fcount]
     # bg_name = bg_test_files[bcount]
-    print('==> ', im_name, bg_name)
-    im, alpha, fg, bg = image_process(im_name, a_name, bg_name)
+    im, alpha, fg, bg = image_process(opts.input, opts.inputa, opts.bg)
 
-    cv.imwrite('results/{}_0_img_original.png'.format(opts.input), img_original)
-    cv.imwrite('results/{}_1_img_crop.png'.format(opts.input), im)
+    cv.imwrite(os.path.join(opts.savepath, '0_img_original.png'), img_original)
+    cv.imwrite(os.path.join(opts.savepath, '1_img_crop.png'), im)
     # 알파 이미지
-    cv.imwrite('results/{}_3_alpha.png'.format(opts.input), alpha)
+    cv.imwrite(os.path.join(opts.savepath, '3_alpha.png'), alpha)
 
-    print('\nStart processing image: {}'.format(opts.input))
+    print('\nStart processing image: {}'.format(input_file_name))
     print('\nBackground: {}'.format(opts.bg))
 
     h, w = im.shape[:2]
 
     trimap = gen_trimap(alpha)
-    cv.imwrite('results/{}_4_trimap.png'.format(opts.input), trimap)
+    cv.imwrite(os.path.join(opts.savepath, '4_trimap.png'), trimap)
 
     x = torch.zeros((1, 4, h, w), dtype=torch.float)
     image = im[..., ::-1]  # RGB
@@ -152,11 +151,11 @@ if __name__ == '__main__':
 
     out = (pred.copy() * 255).astype(np.uint8)
     draw_str(out, (10, 20), str_msg)
-    cv.imwrite('results/{}_5_out.png'.format(opts.input), out)
+    cv.imwrite(os.path.join(opts.savepath, '5_out.png'), out)
 
     # new_bg = new_bgs[i]
     # new_bg = cv.imread(os.path.join(bg_test, new_bg))
-    new_bg = cv.imread(os.path.join('input', bg_name))
+    new_bg = cv.imread(opts.bg)
     bh, bw = new_bg.shape[:2]
     wratio = w / bw
     hratio = h / bh
@@ -167,6 +166,6 @@ if __name__ == '__main__':
                            interpolation=cv.INTER_CUBIC)
 
     im, bg = composite4(im, new_bg, pred, w, h)
-    cv.imwrite('results/{}_7_compose.png'.format(opts.input), im)
+    cv.imwrite(os.path.join(opts.savepath, '7_compose.png'), im)
 
 

@@ -42,7 +42,7 @@ def get_parser():
     parser.add_argument("--input", 
         nargs="+", 
         help="A list of space separated input images",
-        default=os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../public/input/input2.jpg")),
+        default=os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../public/input/input.jpg")),
     )
     parser.add_argument(
         "--output",
@@ -64,17 +64,33 @@ def get_parser():
         "detectron2://COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x/137849600/model_final_f10217.pkl"],
         nargs=argparse.REMAINDER,
     )
+
+    parser.add_argument(
+        "--val",
+        type=int,
+        default=3
+    )
     return parser
 
-def get_trimap(instances):
+def get_trimap(instances, val):
     mask = instances.pred_masks
     height, width = instances.image_size
     img_tri = np.zeros((height, width, 3), np.uint8)
-    for i in range (0, height):
+    for i in range(0, height):
         for j in range(0, width):
             if mask[0][i][j]:
                 img_tri = cv2.line(img_tri, (j ,i), (j, i), (255, 255, 255), 1)
-    cv2.imwrite(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../public/result/test1.jpg")), img_tri)
+    
+    for i in range(0, height):
+        for j in range(0, width):
+            if mask[0][i][j]:
+                count = 0
+                if mask[0][i-1][j-1] and mask[0][i-1][j] and mask[0][i-1][j+1] and mask[0][i][j-1] and mask[0][i][j+1] and mask[0][i+1][j-1] and mask[0][i+1][j] and mask[0][i+1][j+1]:
+                    pass
+                else:
+                    img_tri = cv2.rectangle(img_tri, (j-val ,i-val), (j+val, i+val), (128, 128, 128), -1)
+
+    cv2.imwrite(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../public/input/input_a.jpg")), img_tri)
     
 
 
@@ -87,7 +103,6 @@ if __name__ == "__main__":
     cfg = setup_cfg(args)
 
     demo = VisualizationDemo(cfg)
-
     if args.input:
         if len(args.input) == 1:
             args.input = glob.glob(os.path.expanduser(args.input[0]))
@@ -112,5 +127,5 @@ if __name__ == "__main__":
             visualized_output.save(out_filename)
 
         # // get trimap from result
-        get_trimap(predictions["instances"].to(torch.device("cpu")))
+        get_trimap(predictions["instances"].to(torch.device("cpu")), args.val)
         # masks = np.asarray(predictions["instances"].pred_masks)
