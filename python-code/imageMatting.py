@@ -109,10 +109,10 @@ if __name__ == '__main__':
     # bg_name = bg_test_files[bcount]
     im, alpha, fg, bg = image_process(opts.input, opts.inputa, opts.bg)
 
-    cv.imwrite(os.path.join(opts.savepath, '0_img_original.png'), img_original)
-    cv.imwrite(os.path.join(opts.savepath, '1_img_crop.png'), im)
+    cv.imwrite(os.path.join(opts.savepath, '0_img_original.jpg'), img_original)
+    cv.imwrite(os.path.join(opts.savepath, '1_img_crop.jpg'), im)
     # 알파 이미지
-    cv.imwrite(os.path.join(opts.savepath, '3_alpha.png'), alpha)
+    cv.imwrite(os.path.join(opts.savepath, '3_alpha.jpg'), alpha)
 
     print('\nStart processing image: {}'.format(input_file_name))
     print('\nBackground: {}'.format(opts.bg))
@@ -120,7 +120,7 @@ if __name__ == '__main__':
     h, w = im.shape[:2]
 
     trimap = gen_trimap(alpha)
-    cv.imwrite(os.path.join(opts.savepath, '4_trimap.png'), trimap)
+    cv.imwrite(os.path.join(opts.savepath, '4_trimap.jpg'), trimap)
 
     x = torch.zeros((1, 4, h, w), dtype=torch.float)
     image = im[..., ::-1]  # RGB
@@ -151,7 +151,7 @@ if __name__ == '__main__':
 
     out = (pred.copy() * 255).astype(np.uint8)
     draw_str(out, (10, 20), str_msg)
-    cv.imwrite(os.path.join(opts.savepath, '5_out.png'), out)
+    cv.imwrite(os.path.join(opts.savepath, '5_out.jpg'), out)
 
     # new_bg = new_bgs[i]
     # new_bg = cv.imread(os.path.join(bg_test, new_bg))
@@ -166,6 +166,6 @@ if __name__ == '__main__':
                            interpolation=cv.INTER_CUBIC)
 
     im, bg = composite4(im, new_bg, pred, w, h)
-    cv.imwrite(os.path.join(opts.savepath, '7_compose.png'), im)
+    cv.imwrite(os.path.join(opts.savepath, '7_compose.jpg'), im)
 
 
