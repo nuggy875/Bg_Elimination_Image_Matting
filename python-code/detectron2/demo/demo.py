@@ -6,6 +6,8 @@ import os
 import time
 import cv2
 import tqdm
+import numpy as np
+import torch
 
 from detectron2.config import get_cfg
 from detectron2.data.detection_utils import read_image
@@ -64,6 +66,12 @@ def get_parser():
     )
     return parser
 
+def get_trimap(instances):
+    mask = instances.pred_masks
+    height, width = instances.image_size
+    img = np.zeros((width, height), np.uint8)
+
+
 
 if __name__ == "__main__":
     mp.set_start_method("spawn", force=True)
@@ -97,3 +105,7 @@ if __name__ == "__main__":
                 assert len(args.input) == 1, "Please specify a directory with args.output"
                 out_filename = args.output
             visualized_output.save(out_filename)
+
+        # // get trimap from result
+        get_trimap(predictions["instances"].to(torch.device("cpu")))
+        # masks = np.asarray(predictions["instances"].pred_masks)
