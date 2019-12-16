@@ -42,7 +42,7 @@ def get_parser():
     parser.add_argument("--input", 
         nargs="+", 
         help="A list of space separated input images",
-        default=os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../public/input/input.jpg")),
+        default=os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../public/input/input2.jpg")),
     )
     parser.add_argument(
         "--output",
@@ -74,7 +74,8 @@ def get_trimap(instances):
         for j in range(0, width):
             if mask[0][i][j]:
                 img_tri = cv2.line(img_tri, (j ,i), (j, i), (255, 255, 255), 1)
-    cv2.imwrite(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../public/result/test.jpg")), img_tri)
+    cv2.imwrite(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../public/result/test1.jpg")), img_tri)
+    
 
 
 if __name__ == "__main__":
