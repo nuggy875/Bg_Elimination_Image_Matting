@@ -69,8 +69,12 @@ def get_parser():
 def get_trimap(instances):
     mask = instances.pred_masks
     height, width = instances.image_size
-    img = np.zeros((width, height), np.uint8)
-
+    img_tri = np.zeros((height, width, 3), np.uint8)
+    for i in range (0, height):
+        for j in range(0, width):
+            if mask[0][i][j]:
+                img_tri = cv2.line(img_tri, (j ,i), (j, i), (255, 255, 255), 1)
+    cv2.imwrite(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../public/result/test.jpg")), img_tri)
 
 
 if __name__ == "__main__":
