@@ -8,15 +8,19 @@ Directory : nukki/python-code/checkpoint.tar
 #### Directory Structure
   ~~~
   |-- {root_path}
-  `-- |-- public
+  `-- |-- lib
+      |-- public
+      |-- |-- input
+      |-- |-- result
       |-- python-code
       `-- |-- checkpoint.tar
           |-- imageMatting.py
-          |-- config.py
-          |-- models.py
-          |-- utils.py
-          |-- data_gen.py
+          |-- _init_paths.py
+      |-- detectron2
+      |-- |-- demo
+      |-- |-- |-- demo.py
       |-- README.md
+      |-- Dockerfile
   ~~~
 
 ## Dependencies
