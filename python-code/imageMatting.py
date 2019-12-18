@@ -85,8 +85,8 @@ if __name__ == '__main__':
     img_original = cv.imread(opts.input)
     input_file_name = os.path.basename(opts.input)
 
-    checkpoint = 'checkpoint.tar'
-    checkpoint = torch.load(checkpoint)
+    checkpoint_path = os.path.join(os.path.dirname(__file__), 'checkpoint.tar')
+    checkpoint = torch.load(checkpoint_path)
     model = checkpoint['model'].module
     model = model.to(device)
     model.eval()
