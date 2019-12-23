@@ -16,23 +16,51 @@ async function ping(req, res) {
 
 // python test
 async function python(req, res) {
+  res.send("Hi! This is Nukki:)");
+  console.log('Segmentation Proceeding...')
   let options = {
     mode: "text",
     pythonPath: "",
     pythonOptions: ["-u"],
+    // args: ["value1", "value2"],
     scriptPath: "./python-code/detectron2/demo",
-    args: ["value1", "value2"]
   };
   let value1;
 
   function firstData() {
     return new Promise((resolve, reject) => {
-      return PythonShell.run("demo_test.py", options, function(err, results) {
-        resolve(results);
+      return PythonShell.run("demo.py", options, function(err, results) {
+        resolve(results); 
       });
     });
   }
 
+  function secondData() {
+    options = {
+      ...options,
+      scriptPath: "./python-code"
+    };
+    return new Promise((resolve, reject) => {
+      return PythonShell.run("imageMatting.py", options, function(err, results) {
+        resolve(results);
+      });
+    });
+  }
+  value1 = await firstData();
+  console.log(value1+'\n\n')
+  console.log('Matting Proceeding...')
+  value2 = await secondData();
+  console.log(value2);
+
+}
+
+module.exports = {
+  ping,
+  python
+};
+
+
+/*
   function secondData(data) {
     options = {
       ...options,
@@ -43,17 +71,9 @@ async function python(req, res) {
         err,
         results
       ) {
-        resolve(`${results}-${data}`);
+        //resolve(`${results}-${data}`);
+        resolve(`${results}`)
       });
     });
   }
-
-  value1 = await firstData();
-  value2 = await secondData(value1);
-  console.log("mergedResult", value2);
-}
-
-module.exports = {
-  ping,
-  python
-};
+*/

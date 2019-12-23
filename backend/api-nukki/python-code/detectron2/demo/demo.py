@@ -91,6 +91,7 @@ def get_trimap(instances, val):
                     img_tri = cv2.rectangle(img_tri, (j-val ,i-val), (j+val, i+val), (128, 128, 128), -1)
 
     cv2.imwrite(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../public/input/input_a.jpg")), img_tri)
+    print('Segmentation Complete')
     
 
 

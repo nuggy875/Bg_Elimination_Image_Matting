@@ -167,5 +167,6 @@ if __name__ == '__main__':
 
     im, bg = composite4(im, new_bg, pred, w, h)
     cv.imwrite(os.path.join(opts.savepath, '7_compose.jpg'), im)
+    print('Matting Complete')
 
 
