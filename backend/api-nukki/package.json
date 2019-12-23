@@ -1,0 +1,33 @@
+{
+  "name": "nukki-api-server",
+  "version": "1.0.0",
+  "description": "nukki api server",
+  "main": "index.js",
+  "author": "ideveloper",
+  "license": "MIT",
+  "scripts": {
+    "dev": "NODE_ENV=development nodemon index.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.2",
+    "helmet": "^3.9.0",
+    "nodemailer": "^4.6.8",
+    "pino": "^4.10.2",
+    "python-shell": "^1.0.8",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2"
+  },
+  "devDependencies": {
+    "eslint": "^4.10.0",
+    "eslint-config-prettier": "^2.7.0",
+    "eslint-plugin-prettier": "^2.3.1",
+    "mocha": "^4.0.1",
+    "nodemon": "^1.12.1"
+  },
+  "lint-staged": {
+    "*.js": "lint"
+  }
+}
