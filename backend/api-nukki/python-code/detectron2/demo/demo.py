@@ -42,7 +42,7 @@ def get_parser():
     parser.add_argument("--input", 
         nargs="+", 
         help="A list of space separated input images",
-        default=os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../public/input/input.jpg")),
+        default=os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../public/input/input.png")),
     )
     parser.add_argument(
         "--output",
@@ -90,22 +90,8 @@ def get_trimap(instances, val):
                 else:
                     img_tri = cv2.rectangle(img_tri, (j-val ,i-val), (j+val, i+val), (128, 128, 128), -1)
 
-    cv2.imwrite(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../public/input/input_a.jpg")), img_tri)
+    cv2.imwrite(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../public/input/input_a.png")), img_tri)
     print('Segmentation Complete')
-
-
-def get_trimap2(instances, val):
-    mask = instances.pred_masks
-    height, width = instances.image_size
-    img_tri = np.zeros((height, width, 3), np.uint8)
-    for i in range(0, height):
-        for j in range(0, width):
-            if mask[0][i][j]:
-                img_tri = cv2.line(img_tri, (j ,i), (j, i), (255, 255, 255), 1)
-
-    cv2.imwrite(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../public/input/input_b.jpg")), img_tri)
-    print('Segmentation Complete')
-    
 
 
 if __name__ == "__main__":
@@ -142,5 +128,4 @@ if __name__ == "__main__":
 
         # // get trimap from result
         get_trimap(predictions["instances"].to(torch.device("cpu")), args.val)
-        get_trimap2(predictions["instances"].to(torch.device("cpu")), args.val)
         # masks = np.asarray(predictions["instances"].pred_masks)
